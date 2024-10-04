@@ -8,6 +8,16 @@ from datetime import datetime
 import requests
 import pytz
 
+# Function to read API ID from the text file
+def get_api_id():
+  try:
+    with open("api_id.txt", "r") as file:
+      api_id = file.readline().strip()
+    return api_id
+  except FileNotFoundError:
+    messagebox.showerror("Weather App", "API ID file not found! Please create a file named 'api_id.txt' with your API key inside.")
+    exit()
+
 # Create the main window
 root = Tk()
 root.title("Weather App")
@@ -38,7 +48,9 @@ def getWeather():
         name.config(text="Current Time")
 
         # Fetch weather data from OpenWeatherMap API
-        api = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid=cea4dbcf43deef00707829c47fc46336"
+        # Use the retrieved API ID to construct the API URL
+        api_id = get_api_id()  # Call the function to get the API ID
+        api = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_id}"
         response = requests.get(api)
         response.raise_for_status()
         json_data = response.json()
@@ -70,7 +82,7 @@ def getWeather():
         messagebox.showerror("Weather App", f"An unexpected error occurred: {e}")
 
 # Create and place the search box
-Search_image = PhotoImage(file="C:/Users/Ali/Desktop/BEN/YAZILIM/Python/GUIwithPython/weatherAppwithAPI/search.png")
+Search_image = PhotoImage(file="C:/Users/Ali/Desktop/BEN/YAZILIM/Python/GUIwithPython/weatherApp/search.png")
 myimage = Label(image=Search_image)
 myimage.place(x=20, y=20)
 
@@ -80,17 +92,17 @@ textfield.focus()
 textfield.bind('<Return>', lambda event: getWeather())
 
 # Create and place the search button
-Search_icon = PhotoImage(file="C:/Users/Ali/Desktop/BEN/YAZILIM/Python/GUIwithPython/weatherAppwithAPI/search_icon.png")
+Search_icon = PhotoImage(file="C:/Users/Ali/Desktop/BEN/YAZILIM/Python/GUIwithPython/weatherApp/search_icon.png")
 myimage_icon = Button(image=Search_icon, borderwidth=0, cursor="hand2", bg="#404040", command=getWeather)
 myimage_icon.place(x=400, y=34)
 
 # Add the logo
-Logo_image = PhotoImage(file="C:/Users/Ali/Desktop/BEN/YAZILIM/Python/GUIwithPython/weatherAppwithAPI/logo.png")
+Logo_image = PhotoImage(file="C:/Users/Ali/Desktop/BEN/YAZILIM/Python/GUIwithPython/weatherApp/logo.png")
 logo = Label(image=Logo_image)
 logo.place(x=150, y=100)
 
 # Create the bottom box
-Frame_image = PhotoImage(file="C:/Users/Ali/Desktop/BEN/YAZILIM/Python/GUIwithPython/weatherAppwithAPI/box.png")
+Frame_image = PhotoImage(file="C:/Users/Ali/Desktop/BEN/YAZILIM/Python/GUIwithPython/weatherApp/box.png")
 frame_myimage = Label(image=Frame_image)
 frame_myimage.pack(padx=5, pady=5, side=BOTTOM)
 
